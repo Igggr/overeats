@@ -1,5 +1,5 @@
 import { ArgsType, InputType, Field, ObjectType } from "@nestjs/graphql";
-import exp from "constants";
+import { Length, Max, Min } from "class-validator";
 
 @ObjectType()
 export class Restaurant {
@@ -12,9 +12,22 @@ export class Restaurant {
 
 @InputType()
 export class CreateRestaurant {
-    @Field()
+    @Field(type => String)
     name: string;
 
-    @Field()
+    @Field(type => String)
     rating: string
+}
+
+
+@ArgsType()
+export class ReviewArgs {
+    @Min(1)
+    @Max(5)
+    @Field(type => Number)
+    rating: number;
+
+    @Length(10, 20)
+    @Field(type => String)
+    review: string;
 }

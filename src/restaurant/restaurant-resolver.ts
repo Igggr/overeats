@@ -1,5 +1,5 @@
 import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
-import { Restaurant, CreateRestaurant } from "./restauranrt.dto";
+import { Restaurant, CreateRestaurant, ReviewArgs } from "./restauranrt.dto";
 
 @Resolver(of => Restaurant)
 export class RestaurantResolver {
@@ -16,4 +16,12 @@ export class RestaurantResolver {
         console.log(createDto.name, createDto.rating)
         return true;
     }
+
+    @Mutation(returns => Boolean)
+    rateReataurant(
+        @Args() review: ReviewArgs
+    ) {
+        return true;
+    }
+
 }
