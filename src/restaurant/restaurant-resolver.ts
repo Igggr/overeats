@@ -1,8 +1,11 @@
 import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
-import { Restaurant, CreateRestaurant, ReviewArgs } from "./restauranrt.dto";
+import { CreateRestaurant, ReviewArgs } from "./restauranrt.dto";
+import { Restaurant } from "./entity/restaurant.entity";
+import { RestaurantService } from "./services/restaurant.service";
 
 @Resolver(of => Restaurant)
 export class RestaurantResolver {
+    constructor(private readonly restaurantService: RestaurantService) {}
 
     @Query(returns => Boolean)
     isRestaurantExist(): boolean {

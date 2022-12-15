@@ -3,9 +3,10 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { RestaurantResolver } from './restaurant/restaurant-resolver';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import * as Joi from 'joi';
+import { Restaurant } from './restaurant/entity/restaurant.entity';
+
 
 @Module({
   imports: [
@@ -34,11 +35,11 @@ import * as Joi from 'joi';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [],
+      entities: [Restaurant],      // добавить Entity
       synchronize: true,   // будет делать миграции само
     }),
   ],
   controllers: [],
-  providers: [RestaurantResolver],
+  providers: [],
 })
 export class AppModule {}
