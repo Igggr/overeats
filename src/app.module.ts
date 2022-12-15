@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantResolver } from './restaurant/restaurant-resolver';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -13,6 +14,14 @@ import { RestaurantModule } from './restaurant/restaurant.module';
       envFilePath: `env/.env.${process.env.NODE_ENV}`,
       ignoreEnvFile: process.env.NODE_ENV ==='prod',
       isGlobal: true,
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.valid('dev', 'prod', 'debug').required(),
+        DB_HOST: Joi.string().required(),
+        DB_PORT: Joi.number().required(),
+        DB_USERNAME: Joi.string().required(),
+        DB_PASSWORD: Joi.string().required(),
+        DB_DATABASE: Joi.string().required()
+      })
     }),
     GraphQLModule.forRoot({
       driver: ApolloDriver,
@@ -26,7 +35,7 @@ import { RestaurantModule } from './restaurant/restaurant.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [],
-      synchronize: true,
+      synchronize: true,   // будет делать миграции само
     }),
   ],
   controllers: [],
