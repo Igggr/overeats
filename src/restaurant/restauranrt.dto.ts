@@ -8,7 +8,7 @@ export class CreateRestaurant {
     name: string;
 
     @Field(type => String)
-    rating: string
+    style: string
 }
 
 

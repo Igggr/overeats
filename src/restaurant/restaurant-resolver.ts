@@ -7,24 +7,20 @@ import { RestaurantService } from "./services/restaurant.service";
 export class RestaurantResolver {
     constructor(private readonly restaurantService: RestaurantService) {}
 
-    @Query(returns => Boolean)
-    isRestaurantExist(): boolean {
-        return false;
+    @Query(returns => [Restaurant])
+    async getAllRestaurants(): Promise<Restaurant[]> {
+        return this.restaurantService.findAll();
+    }
+
+    @Query(returns => [Restaurant])
+    async getRestuarnatWithFoodStyle(@Args('style') style: string): Promise<Restaurant[]> {
+        return this.restaurantService.findByStyle(style)
     } 
 
     @Mutation(returns => Boolean)
-    createRestaurant(
+    async createRestaurant(
         @Args('createDto') createDto: CreateRestaurant
-    ): boolean {
-        console.log(createDto.name, createDto.rating)
-        return true;
-    }
-
-    @Mutation(returns => Boolean)
-    rateReataurant(
-        @Args() review: ReviewArgs
-    ) {
-        return true;
-    }
-
+    ): Promise<Restaurant> {
+        return await this.restaurantService.createReastaurant(createDto);
+    }  
 }

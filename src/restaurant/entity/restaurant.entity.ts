@@ -9,11 +9,11 @@ export class Restaurant {
     @Field(type => String)
     id: number;
 
-    @Column(type => String)
     @Field(type => String)
+    @Column()
     name: string;
 
-    @Column(type => String)
+    @Column()
     @Field(type => String)
     style: string;
 }
