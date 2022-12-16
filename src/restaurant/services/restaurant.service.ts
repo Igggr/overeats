@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Restaurant } from '../entity/restaurant.entity';
-import { CreateRestaurant } from '../restauranrt.dto';
+import { CreateRestaurant } from '../dto/create-restaurant.dto';
+import { UpdateRestaurantDTO } from '../dto/update-restaurant.dto';
 
 @Injectable()
 export class RestaurantService {
@@ -22,5 +23,10 @@ export class RestaurantService {
 
     findByStyle(style: string) {
         return this.restaurants.findBy({style});
+    }
+
+    updateRestaurant(updateDTO: UpdateRestaurantDTO) {
+        // const restaurant = this.restaurants.findOneBy({id: updateDTO.id})
+        this.restaurants.update(updateDTO.id, updateDTO);
     }
 }
