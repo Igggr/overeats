@@ -18,11 +18,7 @@ export class RestaurantService {
     async createReastaurant(createDto: CreateRestaurant): Promise<Restaurant> {
         const restaurant =  this.restaurants.create(createDto);
         console.log(restaurant);
-        restaurant.name = createDto.name;
-        restaurant.style = createDto.style;
-        console.log(restaurant);
-        const r = await this.restaurants.save(restaurant);
-        return r;
+        return await this.restaurants.save(restaurant);
     }
 
     findByStyle(style: string) {
