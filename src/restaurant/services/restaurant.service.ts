@@ -15,10 +15,9 @@ export class RestaurantService {
         return this.restaurants.find();
     }
 
-    async createReastaurant(createDto: CreateRestaurant): Promise<Restaurant> {
+    createReastaurant(createDto: CreateRestaurant): Promise<Restaurant> {
         const restaurant =  this.restaurants.create(createDto);
-        console.log(restaurant);
-        return await this.restaurants.save(restaurant);
+        return this.restaurants.save(restaurant);
     }
 
     findByStyle(style: string) {
