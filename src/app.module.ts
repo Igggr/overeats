@@ -13,7 +13,7 @@ import { User } from './users/entity/user.entity';
 
 @Module({
   imports: [
-    RestaurantModule,
+    // RestaurantModule,
     ConfigModule.forRoot({
       envFilePath: `env/.env.${process.env.NODE_ENV}`,
       ignoreEnvFile: process.env.NODE_ENV ==='prod',
