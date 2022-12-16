@@ -6,6 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import * as Joi from 'joi';
 import { Restaurant } from './restaurant/entity/restaurant.entity';
+import { UsersModule } from './users/users.module';
+import { CommonModule } from './common/common.module';
+import { User } from './users/entity/user.entity';
 
 
 @Module({
@@ -35,9 +38,11 @@ import { Restaurant } from './restaurant/entity/restaurant.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [Restaurant],      // добавить Entity
+      entities: [User],      // добавить Entity
       synchronize: true,   // будет делать миграции само
     }),
+    UsersModule,
+    CommonModule,
   ],
   controllers: [],
   providers: [],
