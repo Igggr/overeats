@@ -1,8 +1,14 @@
-import { Field, GraphQLWsSubscriptionsConfig, ObjectType } from "@nestjs/graphql";
+import { Field, GraphQLWsSubscriptionsConfig, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { CoreEntity } from "src/common/entity/core.entity";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-type UserRole = "client" | "owner" | "delivery";
+enum UserRole {
+    Client,
+    Owner,
+    Delivery,
+}
+
+registerEnumType(UserRole, { name: 'UserRole' });
 
 
 @ObjectType()
@@ -17,7 +23,7 @@ export class User extends CoreEntity {
     @Column()
     password: string;
 
-    @Field(type => String)
-    @Column()
+    @Field(type => UserRole)
+    @Column({type: 'enum', enum: UserRole})
     role: UserRole;
 }
