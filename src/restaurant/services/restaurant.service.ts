@@ -27,6 +27,6 @@ export class RestaurantService {
 
     updateRestaurant(updateDTO: UpdateRestaurantDTO) {
         // const restaurant = this.restaurants.findOneBy({id: updateDTO.id})
-        this.restaurants.update(updateDTO.id, updateDTO);
+        this.restaurants.update({ id: updateDTO.id }, updateDTO);
     }
 }
