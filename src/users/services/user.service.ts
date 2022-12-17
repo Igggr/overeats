@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateAccountInput } from "../dto/create-user.dto";
@@ -16,9 +17,21 @@ export class UserService {
         return this.users.find();
     }
 
-    createUser(createAccount: CreateAccountInput) {
-        const user = this.users.create(createAccount);
-        this.users.save(user);
+    async createUser(createAccount: CreateAccountInput): Promise<string | undefined> {
+        // if new user - 1) create user 2) hash password
+
+        try {
+            const exist = await this.users.findOneBy({ email: createAccount.email });
+            if (exist) {
+                return "User with this email already exist";
+            }
+            const user = this.users.create(createAccount);
+            user.password = createAccount.password;
+            await this.users.save(user);
+        } catch (e) {
+            return "Could n't create account";
+        }
     }
+
 
 }
