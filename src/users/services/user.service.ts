@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { ExceptionsHandler } from "@nestjs/core/exceptions/exceptions-handler";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { CreateAccountInput } from "../dto/create-user.dto";
+import { LoginInput, LoginOutput } from "../dto/login-input.dto";
 import { User } from "../entity/user.entity";
+
 
 @Injectable()
 export class UserService {
@@ -31,6 +32,27 @@ export class UserService {
         } catch (e) {
             return "Could n't create account";
         }
+    }
+
+    async login({email, password}: LoginInput): Promise<LoginOutput> {
+        try {
+            const user = await this.users.findOneBy({ email: email});
+            if (user === null) {
+                return { ok: false, error: "User with this email doesn't exist" };
+            }
+            const passwordCorrect = await user.checkPassword(password);
+            
+            if (passwordCorrect) {
+                const token = "lalalala";
+                return { ok: true, token }
+            } else {
+                return { ok: false, error: "wrong Password"};
+            }
+        } catch (e) {
+            return { ok: false, error: e};
+        }
+        
+        return {ok: true}
     }
 
 
