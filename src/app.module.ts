@@ -9,6 +9,7 @@ import { Restaurant } from './restaurant/entity/restaurant.entity';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { User } from './users/entity/user.entity';
+import { join } from 'path';
 
 
 @Module({
@@ -24,7 +25,8 @@ import { User } from './users/entity/user.entity';
         DB_PORT: Joi.number().required(),
         DB_USERNAME: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
-        DB_DATABASE: Joi.string().required()
+        DB_DATABASE: Joi.string().required(),
+        TOKEN_SECRET: Joi.string().required(),
       })
     }),
     GraphQLModule.forRoot({
