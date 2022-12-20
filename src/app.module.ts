@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { User } from './users/entity/user.entity';
 import { join } from 'path';
+import { JwtModule } from './jwt/jwt.module';
 
 
 @Module({
@@ -45,6 +46,7 @@ import { join } from 'path';
     }),
     UsersModule,
     CommonModule,
+    JwtModule.forRoot(),
   ],
   controllers: [],
   providers: [],

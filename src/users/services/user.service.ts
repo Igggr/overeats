@@ -6,6 +6,7 @@ import { LoginInput, LoginOutput } from "../dto/login-input.dto";
 import { User } from "../entity/user.entity";
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from "@nestjs/config";
+import { JwtService } from "src/jwt/jwt.service";
 
 @Injectable()
 export class UserService {
@@ -13,6 +14,7 @@ export class UserService {
         @InjectRepository(User)
         private readonly users: Repository<User>,
         private readonly configService: ConfigService,
+        private readonly jwtService: JwtService,
     ) {}
 
 
