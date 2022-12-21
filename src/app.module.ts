@@ -9,9 +9,8 @@ import { Restaurant } from './restaurant/entity/restaurant.entity';
 import { UsersModule } from './users/users.module';
 import { CommonModule } from './common/common.module';
 import { User } from './users/entity/user.entity';
-import { join } from 'path';
 import { JwtModule } from './jwt/jwt.module';
-import { jwtMiddleware, JWTMiddleware } from './jwt/jwt.middleware';
+import { JWTMiddleware } from './jwt/jwt.middleware';
 
 
 @Module({
@@ -56,7 +55,7 @@ import { jwtMiddleware, JWTMiddleware } from './jwt/jwt.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(jwtMiddleware)
+    consumer.apply(JWTMiddleware)
             .forRoutes({             // применять только к путям
               path: '/graphql',      // начинающимся на /graphql
               method: RequestMethod.ALL     // и только на метод

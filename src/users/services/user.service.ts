@@ -19,6 +19,10 @@ export class UserService {
         return this.users.find();
     }
 
+    findById(id: number): Promise<User> {
+        return this.users.findOneBy({id: id})
+    }
+
     async createUser(createAccount: CreateAccountInput): Promise<string | undefined> {
         // if new user - 1) create user 2) hash password
 

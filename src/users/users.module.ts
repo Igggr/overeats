@@ -10,6 +10,7 @@ import { JwtModule } from 'src/jwt/jwt.module';
     imports: [
         TypeOrmModule.forFeature([User]),
     ],
-    providers: [UserResolver, UserService,] // JwtService] // <- нельзя. Конаиги просрутся
+    providers: [UserResolver, UserService,], // JwtService] // <- нельзя. Конаиги просрутся
+    exports: [UserService],
 })
 export class UsersModule {}
