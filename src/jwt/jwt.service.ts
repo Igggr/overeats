@@ -19,7 +19,7 @@ export class JwtService {
         // не используй decode - он не проверяет кем подписан токен
         const payload = jwt.verify(token, this.options.privateKey);
         const id = payload['id'] as string;
-        console.log(id);
+        // console.log(id);
         return id
     }
 }
