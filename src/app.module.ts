@@ -11,6 +11,7 @@ import { CommonModule } from './common/common.module';
 import { User } from './users/entity/user.entity';
 import { JwtModule } from './jwt/jwt.module';
 import { JWTMiddleware } from './jwt/jwt.middleware';
+import { AuthModule } from './auth/auth.module';
 
 
 @Module({
@@ -46,7 +47,6 @@ import { JWTMiddleware } from './jwt/jwt.middleware';
       synchronize: true,   // будет делать миграции само
     }),
     UsersModule,
-    CommonModule,
     JwtModule.forRoot({
       privateKey: process.env.TOKEN_SECRET,
     }),
