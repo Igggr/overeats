@@ -5,6 +5,7 @@ import { CreateAccountInput } from "../dto/create-user.dto";
 import { LoginInput, LoginOutput } from "../dto/login-input.dto";
 import { User } from "../entity/user.entity";
 import { JwtService } from "src/jwt/jwt.service";
+import { EditProfileInput } from "../dto/edit-profile.dto";
 
 @Injectable()
 export class UserService {
@@ -61,4 +62,7 @@ export class UserService {
     }
 
 
+    async editProfile(id: number, { email, password }: EditProfileInput) {
+        return await this.users.update({ id }, { email, password})
+    }
 }
