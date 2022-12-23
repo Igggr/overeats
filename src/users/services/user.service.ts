@@ -58,11 +58,19 @@ export class UserService {
             return { ok: false, error: e};
         }
         
-        return {ok: true}
     }
 
 
-    async editProfile(id: number, { email, password }: EditProfileInput) {
-        return await this.users.update({ id }, { email, password})
+    async editProfile(id: number, {email, password}: EditProfileInput) {
+        // this.users.update() will not trigger beforeUpdate :((
+        const user = await this.users.findOneById(id);
+        if (password) {
+            user.password = password;
+        }
+        if (email) {
+            user.email = email;
+        }
+
+        return await this.users.save(user);
     }
 }

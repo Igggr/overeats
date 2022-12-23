@@ -1,6 +1,6 @@
 import { Field, GraphQLWsSubscriptionsConfig, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { CoreEntity } from "src/common/entity/core.entity";
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { InternalServerErrorException } from "@nestjs/common";
 import { ConnectableObservable } from "rxjs";
@@ -31,9 +31,13 @@ export class User extends CoreEntity {
     role: UserRole;
 
     @BeforeInsert()
+    @BeforeUpdate() // will re-hash pasword if we just update email ?!
     async hashPassword(): Promise<void> {
         try {
+            console.log("change password");
+            console.log(this.password);
             this.password = await bcrypt.hash(this.password, 10);
+            console.log(this.password);
         } catch (e) {
             console.log(e)
             throw InternalServerErrorException;

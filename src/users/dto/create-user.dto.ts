@@ -17,5 +17,5 @@ export class CreateAccountOutput {
 
 
 @ObjectType()
-export class UserObjectType extends OmitType(User, ['password'], ObjectType)
+export class UserObjectType extends OmitType(User, [], ObjectType)
 {}
