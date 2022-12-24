@@ -12,6 +12,8 @@ import { User } from './users/entity/user.entity';
 import { JwtModule } from './jwt/jwt.module';
 import { JWTMiddleware } from './jwt/jwt.middleware';
 import { AuthModule } from './auth/auth.module';
+import { EmailModule } from './email/email.module';
+import { Verification } from './users/entity/verification.entity';
 
 
 @Module({
@@ -43,13 +45,14 @@ import { AuthModule } from './auth/auth.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
-      entities: [User],      // добавить Entity
+      entities: [User, Verification],      // добавить Entity
       synchronize: true,   // будет делать миграции само
     }),
     UsersModule,
     JwtModule.forRoot({
       privateKey: process.env.TOKEN_SECRET,
     }),
+    EmailModule,
   ],
   controllers: [],
   providers: [],

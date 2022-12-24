@@ -3,7 +3,7 @@ import { User } from "../entity/user.entity";
 
 
 @InputType()
-export class CreateAccountInput extends OmitType(User, ['id', 'createdAt', 'updatedAt'], InputType)
+export class CreateAccountInput extends OmitType(User, ['id', 'createdAt', 'updatedAt', 'verified'], InputType)
 {}
 
 @ObjectType()

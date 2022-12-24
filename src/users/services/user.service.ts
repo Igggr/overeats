@@ -6,12 +6,15 @@ import { LoginInput, LoginOutput } from "../dto/login-input.dto";
 import { User } from "../entity/user.entity";
 import { JwtService } from "src/jwt/jwt.service";
 import { EditProfileInput } from "../dto/edit-profile.dto";
+import { Verification } from "../entity/verification.entity";
 
 @Injectable()
 export class UserService {
     constructor(
         @InjectRepository(User)
         private readonly users: Repository<User>,
+        @InjectRepository(Verification)
+        private readonly verifications: Repository<Verification>,
         private readonly jwtService: JwtService,
     ) {}
 
@@ -32,9 +35,12 @@ export class UserService {
             if (exist) {
                 return "User with this email already exist";
             }
-            const user = this.users.create(createAccount);
-            user.password = createAccount.password;
+            const user = this.users.create({...createAccount});
             await this.users.save(user);
+
+            const verification = this.verifications.create({user})
+            await this.verifications.save(verification);
+            
         } catch (e) {
             return "Could n't create account";
         }
@@ -68,6 +74,9 @@ export class UserService {
             user.password = password;
         }
         if (email) {
+            user.verified = false;
+            const verification = this.verifications.create({ user });
+            await this.verifications.save(verification);
             user.email = email;
         }
 

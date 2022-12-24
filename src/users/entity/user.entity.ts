@@ -30,6 +30,10 @@ export class User extends CoreEntity {
     @Column({type: 'enum', enum: UserRole})
     role: UserRole;
 
+    @Field(type => Boolean)
+    @Column({default: false})
+    verified: boolean;
+
     @BeforeInsert()
     @BeforeUpdate() // will re-hash pasword if we just update email ?!
     async hashPassword(): Promise<void> {
