@@ -82,4 +82,20 @@ export class UserService {
 
         return await this.users.save(user);
     }
+
+    async verifyEmail(code: string): Promise<boolean> {
+        try {
+            const verification = await this.verifications.findOneBy({code});
+            if (verification) {
+                verification.user.verified = true;
+                this.users.save(verification.user)
+                this.verifications.delete(verification.id);
+                return true
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
+
+    }
 }
