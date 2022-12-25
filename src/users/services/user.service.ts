@@ -7,6 +7,7 @@ import { User } from "../entity/user.entity";
 import { JwtService } from "src/jwt/jwt.service";
 import { EditProfileInput } from "../dto/edit-profile.dto";
 import { Verification } from "../entity/verification.entity";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -49,15 +50,20 @@ export class UserService {
     async login({email, password}: LoginInput): Promise<LoginOutput> {
         try {
             const user = await this.users.findOneBy({ email: email});
-            if (user === null) {
+            if (!user) {
                 return { ok: false, error: "User with this email doesn't exist" };
             }
+            console.log('verifying...')
+            console.log(user);
             const passwordCorrect = await user.checkPassword(password);
             
             if (passwordCorrect) {
                 const token = this.jwtService.sign(user.id) ;
                 return { ok: true, token }
             } else {
+                console.log(user.password)
+                console.log(await bcrypt.hash(password, 10))
+
                 return { ok: false, error: "wrong Password"};
             }
         } catch (e) {
@@ -75,12 +81,16 @@ export class UserService {
         }
         if (email) {
             user.verified = false;
+            if (user.verification) {
+                await this.verifications.delete(user.verification.id);
+            }
             const verification = this.verifications.create({ user });
+            
             await this.verifications.save(verification);
             user.email = email;
         }
 
-        return await this.users.save(user);
+        return await this.users.update(user.id, {...user});
     }
 
     async verifyEmail(code: string): Promise<boolean> {

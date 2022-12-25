@@ -1,9 +1,10 @@
 import { Field, GraphQLWsSubscriptionsConfig, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { CoreEntity } from "src/common/entity/core.entity";
-import { BeforeInsert, BeforeUpdate, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import * as bcrypt from "bcrypt";
 import { InternalServerErrorException } from "@nestjs/common";
 import { ConnectableObservable } from "rxjs";
+import { Verification } from "./verification.entity";
 
 enum UserRole {
     Client,
@@ -23,7 +24,7 @@ export class User extends CoreEntity {
     email: string;
 
     @Field(type => String)
-    @Column()
+    @Column() // {select: false}) //  не включай в console.log()ю жто решение ломает логин!!!!!
     password: string;
 
     @Field(type => UserRole)
@@ -33,6 +34,9 @@ export class User extends CoreEntity {
     @Field(type => Boolean)
     @Column({default: false})
     verified: boolean;
+
+    @OneToOne(type => Verification)
+    verification: Verification;
 
     @BeforeInsert()
     @BeforeUpdate() // will re-hash pasword if we just update email ?!
@@ -49,12 +53,14 @@ export class User extends CoreEntity {
     }
 
     checkPassword(pasword): Promise<boolean> {
-        try {
-            const ok =  bcrypt.compare(pasword, this.password);
-            return ok;
-        } catch(e) {
-            console.log(e);
-            throw new InternalServerErrorException();
-        } 
+        if (this.password) {
+            try {
+                const ok =  bcrypt.compare(pasword, this.password);
+                return ok;
+            } catch(e) {
+                console.log(e);
+                throw new InternalServerErrorException();
+            } 
+        }
     } 
 }
